@@ -3,10 +3,10 @@ import PDF from './PDF';
 
 class Post extends Component {
     state = {
-        fname: '',
-        lname: '',
+        name: '',
         id: '',
         message: '',
+        profile: null,
         postSubmitted: false
     }
 
@@ -18,7 +18,7 @@ class Post extends Component {
 
     submitPost = (e) => {
         
-        if(!this.state.fname || !this.state.lname || !this.state.id || !this.state.message){
+        if(!this.state.name || !this.state.id || !this.state.message){
             alert('All fields are required!');
             e.preventDefault();
         }else{
@@ -42,15 +42,15 @@ class Post extends Component {
                                                 <legend className="text-center header">Enter Candidate Details</legend>
                                                 <div className="form-group">
                                                     <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-user bigicon"></i></span>
-                                                    <input onChange={this.onChange('fname')} name="fname" type="text" placeholder="First Name" className="form-control" />
-                                                </div>
-                                                <div className="form-group">
-                                                    <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-user bigicon"></i></span>
-                                                    <input onChange={this.onChange('lname')} name="lname" type="text" placeholder="Last Name" className="form-control" />
+                                                    <input onChange={this.onChange('name')} name="name" type="text" placeholder="Full Name" className="form-control" />
                                                 </div>
                                                 <div className="form-group">
                                                     <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-user bigicon"></i></span>
                                                     <input onChange={this.onChange('id')} name="id" type="text" placeholder="Employee ID" className="form-control" />
+                                                </div>
+                                                <div className="form-group">
+                                                    <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-user bigicon"></i></span>
+                                                    <input onChange={this.onChange('profile')} name="profile" type="file" placeholder="Enter user image" className="form-control" />
                                                 </div>
                                                 <div className="form-group">
                                                     <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-pencil-square-o bigicon"></i></span>
@@ -66,7 +66,7 @@ class Post extends Component {
                             </div>
                         </div>
                     </div>) : (
-                        <PDF fname={this.state.fname} lname={this.state.lname} id={this.state.id} message={this.state.message}/>
+                        <PDF name={this.state.name} id={this.state.id} message={this.state.message} profile={this.state.profile}/>
                     )
                 }
             </>

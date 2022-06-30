@@ -1,16 +1,13 @@
 .App {
   text-align: center;
-}
-
-
-.Post {
-  max-width: 800px;
-  width: 100%;
-  display: table;
-  margin: 0 auto;
-  padding: 20px 50px;
+  height: 100%;
+  font-family: 'Anek Latin', sans-serif;;
 }
 
 .form-group{
   padding-bottom: 5px;
+}
+
+.form-control{
+  font-family: 'Anek Latin';
 }
