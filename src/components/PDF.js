@@ -1,15 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Pdf from "react-to-pdf";
 import './css/pdf.css';
 import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
+import * as XLSX from 'xlsx';
 
 const ref = React.createRef();
 
 const PDF = (props) => {
-  console.log(props);
+  const [items, setItems] = useState([]);
+
+  const readExcel = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
+
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
+
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
+
+        const wsname = wb.SheetNames[0];
+
+        const ws = wb.Sheets[wsname];
+
+        const data = XLSX.utils.sheet_to_json(ws);
+
+        resolve(data);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+
+    promise.then((d) => {
+      setItems(d);
+    });
+  };
+
   return (
     <>
+      <div>
+        <input type="file" onChange={(e) => {
+          const file = e.target.files[0];
+          readExcel(file);
+        }} />
+      </div>
       <div className='pdf'>
         <div className="content-wrapper">
           <div className="Post" ref={ref}>
@@ -21,8 +58,8 @@ const PDF = (props) => {
 
                 <p className='header-text'>Employee Name: {props.name}</p>
                 <p className='header-text'>Employee ID: {props.id}</p>
-                <p className='header-text'>Grade: A</p>
-                <p className='header-text'>Experience: 10 Years</p>
+                <p className='header-text'>Grade: {props.grade}</p>
+                <p className='header-text'>Experience: {props.years}</p>
               </div>
             </header>
             <div className="user-details">
@@ -35,9 +72,7 @@ const PDF = (props) => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td colSpan={3}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis lacinia sollicitudin massa, posuere aliquet nisi semper id. Vestibulum sit amet nibh porta, imperdiet turpis at, semper nulla. Cras feugiat consectetur arcu, id porta nunc. Vestibulum eleifend blandit diam sed luctus. Suspendisse potenti. Nullam fermentum nunc nibh, ullamcorper laoreet sapien pretium eget. Sed eu varius sapien, in ullamcorper tellus. Integer eleifend et dui non tempus. Praesent congue viverra ante vitae maximus. Nulla porta nunc in laoreet iaculis. Fusce turpis dui, efficitur ut nulla quis, dictum sagittis felis. Nulla quis purus ut enim bibendum tempus. Morbi elementum mi neque, eu dictum mauris auctor non. Suspendisse potenti. Suspendisse in justo sit amet lorem feugiat finibus.
-
-                        Nulla pulvinar faucibus neque id dapibus. Duis et tincidunt dui, vel vehicula enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada, lacus sit amet consectetur dictum, erat risus consectetur quam, ac facilisis nibh tellus sit amet ligula. Mauris a massa cursus, eleifend ligula ac, bibendum enim. Curabitur lacinia purus ut dolor malesuada tempor. Donec tincidunt tempor enim auctor porttitor. Cras eget nibh dictum urna finibus maximus. Curabitur eu odio fringilla, pretium ante vitae, viverra mi.</td>
+                      <td colSpan={3}>{props.experience}</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -47,21 +82,12 @@ const PDF = (props) => {
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th colSpan={3}>Certification</th>
+                      <th colSpan={3}>Certification and Achievements</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>1</td>
-                      <td colSpan={2}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td colSpan={2}>Duis et tincidunt dui, vel vehicula enim.</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td colSpan={2}>Nulla pulvinar faucibus neque id dapibus. Duis et tincidunt dui.</td>
+                      <td colSpan={3}>{props.certification}</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -71,26 +97,17 @@ const PDF = (props) => {
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th colSpan={3}>Trainings and Assessments Completed</th>
+                      <th colSpan={3}>Trainings and Assessments</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>1</td>
-                      <td colSpan={2}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td colSpan={2}>Duis et tincidunt dui, vel vehicula enim.</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td colSpan={2}>Nulla pulvinar faucibus neque id dapibus. Duis et tincidunt dui.</td>
+                      <td colSpan={3}>{props.training}</td>
                     </tr>
                   </tbody>
                 </Table>
               </div>
-              <p>Reviews : {props.message}</p>
+              <p>Reviews : testets</p>
             </div>
           </div>
         </div>

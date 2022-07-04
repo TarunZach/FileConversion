@@ -5,7 +5,11 @@ class Post extends Component {
     state = {
         name: '',
         id: '',
-        message: '',
+        grade:'',
+        years:'',
+        experience: '',
+        certification: '',
+        training: '',
         profile: null,
         postSubmitted: false
     }
@@ -18,7 +22,7 @@ class Post extends Component {
 
     submitPost = (e) => {
         
-        if(!this.state.name || !this.state.id || !this.state.message){
+        if(!this.state.name || !this.state.grade || !this.state.id || !this.state.years || !this.state.experience || !this.state.certification || !this.state.training){
             alert('All fields are required!');
             e.preventDefault();
         }else{
@@ -53,8 +57,24 @@ class Post extends Component {
                                                     <input onChange={this.onChange('profile')} name="profile" type="file" placeholder="Enter user image" className="form-control" />
                                                 </div>
                                                 <div className="form-group">
+                                                    <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-user bigicon"></i></span>
+                                                    <input onChange={this.onChange('grade')} name="grade" type="text" placeholder="Grade" className="form-control" />
+                                                </div>
+                                                <div className="form-group">
+                                                    <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-user bigicon"></i></span>
+                                                    <input onChange={this.onChange('years')} name="years" type="text" placeholder="Years of Experience" className="form-control" />
+                                                </div>
+                                                <div className="form-group">
                                                     <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-pencil-square-o bigicon"></i></span>
-                                                    <textarea onChange={this.onChange('message')} className="form-control" name="message" placeholder="Enter your text here" rows="7"></textarea>
+                                                    <textarea onChange={this.onChange('experience')} className="form-control" name="experience" placeholder="Enter Experience" rows="7"></textarea>
+                                                </div>
+                                                <div className="form-group">
+                                                    <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-pencil-square-o bigicon"></i></span>
+                                                    <textarea onChange={this.onChange('certification')} className="form-control" name="certification" placeholder="Certifications and/or Achievements" rows="7"></textarea>
+                                                </div>
+                                                <div className="form-group">
+                                                    <span className="col-md-1 col-md-offset-2 text-center"><i className="fa fa-pencil-square-o bigicon"></i></span>
+                                                    <textarea onChange={this.onChange('training')} className="form-control" name="training" placeholder="Trainings and Assessments" rows="7"></textarea>
                                                 </div>
                                                 <div className="form-group">
                                                     <button type="button" onClick={this.submitPost} className="btn btn-primary btn-lg">Submit</button>
@@ -66,7 +86,7 @@ class Post extends Component {
                             </div>
                         </div>
                     </div>) : (
-                        <PDF name={this.state.name} id={this.state.id} message={this.state.message} profile={this.state.profile}/>
+                        <PDF name={this.state.name} id={this.state.id} grade={this.state.grade} years={this.state.years} experience={this.state.experience} profile={this.state.profile} certification={this.state.certification} training={this.state.training} />
                     )
                 }
             </>
