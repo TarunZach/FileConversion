@@ -1,52 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Pdf from "react-to-pdf";
 import './css/pdf.css';
 import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
-import * as XLSX from 'xlsx';
+import { useLocation } from 'react-router-dom';
 
 const ref = React.createRef();
 
 const PDF = (props) => {
-  const [items, setItems] = useState([]);
-
-  const readExcel = (file) => {
-    const promise = new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(file);
-
-      fileReader.onload = (e) => {
-        const bufferArray = e.target.result;
-
-        const wb = XLSX.read(bufferArray, { type: "buffer" });
-
-        const wsname = wb.SheetNames[0];
-
-        const ws = wb.Sheets[wsname];
-
-        const data = XLSX.utils.sheet_to_json(ws);
-
-        resolve(data);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-
-    promise.then((d) => {
-      setItems(d);
-    });
-  };
-
+  let location = useLocation();
+  console.log("user",location.state);
   return (
     <>
-      <div>
-        <input type="file" onChange={(e) => {
-          const file = e.target.files[0];
-          readExcel(file);
-        }} />
-      </div>
       <div className='pdf'>
         <div className="content-wrapper">
           <div className="Post" ref={ref}>
