@@ -1,0 +1,19 @@
+html {
+  height: 100%;
+  background: rgb(173, 173, 173);
+}
+
+.app {
+  min-height: 100%;
+  padding-bottom: 5px;
+  background: rgb(173, 173, 173);
+}
+
+
+.form-group{
+  padding-bottom: 5px;
+}
+
+.form-control{
+  font-family: 'Anek Latin';
+}
