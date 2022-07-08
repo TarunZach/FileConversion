@@ -1,7 +1,7 @@
 .content-wrapper {
     margin: auto;
     width: 100%;
-    max-width: 800px;
+    max-width: 1200px;
     border: 2px solid black;
     margin-bottom: 10px;
   }
@@ -11,7 +11,7 @@
     flex-direction: column;
   }
   
-  .pdf-download {
+  .generatePdf{
     margin: auto;
   }
   
@@ -19,7 +19,7 @@
     font-family: "Anek Latin";
     margin: auto;
     justify-content: center;
-    max-width: 800px;
+    max-width: 1200px;
     width: 100%;
     text-align: center;
     background: white;
@@ -34,6 +34,10 @@
   
   .user-details {
     padding-bottom: 5px;
+  }
+
+  .first-row{
+    display: flex;
   }
   
   .item-wrapper {
@@ -63,5 +67,17 @@
   
   .experience-table {
     margin-top: 20px;
+  }
+
+  .training-table{
+    margin: auto auto;
+  }
+
+  .second-row{
+    display: flex;
+  }
+
+  .chart{
+    width: 100%;
   }
   
