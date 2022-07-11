@@ -23,22 +23,22 @@
     width: 100%;
     text-align: center;
     background: white;
+    padding-bottom: 5px;
   }
   
   .pdf-header {
     display: flex;
     height: 137px;
     width: 100%;
-    background: rgb(68, 114, 196);
+    background: rgb(25, 88, 125);
   }
   
   .user-details {
     padding-bottom: 5px;
+    display: flex;
+    margin-top: 50px;
   }
 
-  .first-row{
-    display: flex;
-  }
   
   .item-wrapper {
     display: flex;
@@ -66,18 +66,25 @@
   }
   
   .experience-table {
-    margin-top: 20px;
+    margin: auto auto;
+    height: 300px;
+    border-right: 1px solid black;
   }
 
   .training-table{
     margin: auto auto;
+    border-right: none;
   }
 
-  .second-row{
-    display: flex;
+  .box img{
+    width: 30%;
+    margin-bottom: 20px;
   }
+
+
 
   .chart{
-    width: 100%;
+    background: white;
+    width: 25%;
   }
   
