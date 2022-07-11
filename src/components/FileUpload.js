@@ -53,6 +53,8 @@ const FileUpload = () => {
           employee_number: json["Employee Number"],
           employee_experience: json["Total Work Experience in (years)"],
           employee_grade: json["Grade"],
+          employee_relevant_experience:
+            json["Relevant experience in primary skills"],
           employee_primary_experience: json["Primary Skills"],
           employee_secondary_experience:
             json[
@@ -60,7 +62,12 @@ const FileUpload = () => {
             ],
           employee_certificates:
             json["Certificates/Badges /challenges earned​ through learnings"],
-          employee_trainings: json[`Training’s​ Completed (External/Internal)`]
+          employee_trainings: json[`Training’s​ Completed (External/Internal)`],
+          employee_htmlcss: json["HTML/CSS"],
+          employee_js: json["JavaScript"],
+          employee_angular: json["Angular"],
+          employee_react: json["ReactJs"],
+          employee_reactnative: json["React Native"]
         });
       });
 
@@ -68,136 +75,7 @@ const FileUpload = () => {
     });
   };
 
-  function showData(e) {
-    let id = e.target.id;
-    // console.log(data);
-    let filtered = data.find((selected) => selected.employee_id === id);
-    console.log(filtered);
-
-    // Create A pptx
-    // 1. Create a new Presentation
-    let pres = new PptxGenJS();
-
-    // 2. Add a Slide
-    let slide = pres.addSlide();
-
-    // Slide add Shape
-    slide.addShape(pres.ShapeType.rect, {
-      x: 0,
-      y: 0,
-      w: "100%",
-      fill: { color: "0000DD" }
-    });
-
-    // Add USer Image(static for now)
-    slide.addImage({
-      x: "2%",
-      y: "2%",
-      w: "9%",
-      h: "15%",
-      path: UserImage,
-      rounding: true
-    });
-
-    // 3. Add one or more objects (Tables, Shapes, Images, Text and Media) to the Slide
-    let textboxName = `Name: ${filtered.employee_name}`;
-    let textboxID = `ID: ${filtered.employee_id}`;
-    let textboxGrade = `Grade: ${filtered.employee_grade}`;
-    let textboxExperience = `Experience: ${filtered.employee_experience}`;
-    // let textboxOpts = {y: 0.5, color: "ffffff",fontSize: 12};
-
-    // Adding data to the Top Header
-    slide.addText(textboxName, {
-      x: "20%",
-      y: 0.5,
-      w: "20%",
-      color: "ffffff",
-      fontSize: 12
-    });
-    slide.addText(textboxID, {
-      x: "40%",
-      y: 0.5,
-      w: "20%",
-      color: "ffffff",
-      fontSize: 12
-    });
-    slide.addText(textboxGrade, {
-      x: "60%",
-      y: 0.5,
-      w: "20%",
-      color: "ffffff",
-      fontSize: 12
-    });
-    slide.addText(textboxExperience, {
-      x: "80%",
-      y: 0.5,
-      w: "20%",
-      color: "ffffff",
-      fontSize: 12
-    });
-
-    // Add Image by Local URI:
-
-    // Relevent Experience
-    slide.addImage({ x: "2%", y: "23%", w: "3%", h: "5%", path: Work });
-    slide.addText("Relevant Experience:", {
-      x: "7%",
-      y: "25%",
-      w: "40%",
-      color: "000000",
-      fontSize: 14,
-      underline: true
-    });
-    slide.addText(
-      `${
-        filtered.employee_primary_experience
-          ? filtered.employee_primary_experience
-          : "N/A"
-      }`,
-      { x: "7%", y: "30%", w: "40%", color: "000000", fontSize: 12 }
-    );
-
-    // Certifications
-    slide.addImage({
-      x: "50%",
-      y: "23%",
-      w: "3%",
-      h: "5%",
-      path: Certification
-    });
-    slide.addText("Certification and Badges:", {
-      x: "55%",
-      y: "25%",
-      w: "40%",
-      color: "000000",
-      fontSize: 14,
-      underline: true
-    });
-    slide.addText(
-      `${
-        filtered.employee_certificates ? filtered.employee_certificates : "N/A"
-      }`,
-      { x: "55%", y: "30%", w: "40%", color: "000000", fontSize: 12 }
-    );
-
-    // Trainings
-    slide.addImage({ x: "50%", y: "53%", w: "3%", h: "5%", path: Training });
-    slide.addText("Trainings:", {
-      x: "55%",
-      y: "55%",
-      w: "40%",
-      color: "000000",
-      fontSize: 14,
-      underline: true
-    });
-    slide.addText(
-      `${filtered.employee_trainings ? filtered.employee_trainings : "N/A"}`,
-      { x: "55%", y: "60%", w: "40%", color: "000000", fontSize: 12 }
-    );
-
-    // 4. Save the Presentation
-    pres.writeFile({ fileName: `${filtered.employee_name}.pdf` });
-  }
+  
   return (
     <>
       <div className="page-wrapper">
@@ -277,17 +155,17 @@ const FileUpload = () => {
                             state={list}
                           >
                             <button className="btn btn-primary btn-sm">
-                              PDF
+                              View
                             </button>
                           </Link>
                           {/* <Link to="/profile">Profile</Link> */}
-                          <button
+                          {/* <button
                             id={list.employee_id}
                             className="btn btn-primary btn-sm"
                             onClick={showData}
                           >
                             PPT
-                          </button>
+                          </button> */}
                         </td>
                       </tr>
                     </>
