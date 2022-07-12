@@ -404,7 +404,7 @@ const PDF = (props) => {
 
   const generatePDF = () => {
     console.log("pdf button click");
-    let doc = new jsPDF("l", "pt", "a3");
+    let doc = new jsPDF("l", "px", [1200, 720]);
     doc.html(document.getElementById("displayPDF"), {
       callback: function (pdf) {
         pdf.save("candidate");
@@ -440,7 +440,8 @@ const PDF = (props) => {
                   <div className="details">
                     <p className="detail-text">
                       {user.employee_primary_experience}
-                      {user.employee_secondary_experience}
+                      {user.employee_secondary_experience},
+                      {user.employee_relevant_experience}
                     </p>
                   </div>
                 </div>
@@ -458,17 +459,19 @@ const PDF = (props) => {
                   </div>
                   <div className="details">
                     <p className="detail-text">
-                      HTML/CSS: {user.employee_htmlcss}
+                      <b>HTML/CSS</b>: {user.employee_htmlcss}
                     </p>
                     <p className="detail-text">
-                      JavaScript: {user.employee_js}
+                      <b>JavaScript</b>: {user.employee_js}
                     </p>
                     <p className="detail-text">
-                      Angular: {user.employee_angular}
+                      <b>Angular</b>: {user.employee_angular}
                     </p>
-                    <p className="detail-text">React: {user.employee_react}</p>
                     <p className="detail-text">
-                      React Native: {user.employee_reactnative}
+                      <b>React</b>: {user.employee_react}
+                    </p>
+                    <p className="detail-text">
+                      <b>React Native</b>: {user.employee_reactnative}
                     </p>
                   </div>
                 </div>
@@ -482,7 +485,7 @@ const PDF = (props) => {
                     className="mini-img  trainingimg"
                   />
                   <div className="heading">
-                    <p className="skill-title">Trainings and Assessments</p>
+                    <p className="skill-title">Trainings</p>
                   </div>
                   <div className="details">
                     <p className="detail-text">{user.employee_trainings}</p>
@@ -498,9 +501,7 @@ const PDF = (props) => {
                     className="mini-img"
                   />
                   <div className="heading">
-                    <p className="skill-title">
-                      Certification and Achievements
-                    </p>
+                    <p className="skill-title">Certification</p>
                   </div>
                   <div className="details">
                     <p className="detail-text">{user.employee_certificates}</p>
@@ -509,7 +510,7 @@ const PDF = (props) => {
               </div>
             </div>
             <div className="review-container">
-              <p className="reviews">Reviews : testets</p>
+              <p className="reviews">Reviews : test</p>
             </div>
           </div>
         </div>
@@ -535,15 +536,20 @@ const PDF = (props) => {
       </div>
     </>
   ) : (
-    <button
-      onClick={() => {
-        history("/");
-      }}
-      className="btn btn-primary"
-      type="primary"
-    >
-      Go Back
-    </button>
+    <>
+      <div className="go-backwrapper">
+        <p className="go-backtext">File Not Found!</p>
+        <button
+          onClick={() => {
+            history("/");
+          }}
+          className="btn btn-primary g0-backbtn"
+          type="primary"
+        >
+          Go Back
+        </button>
+      </div>
+    </>
   );
 };
 
