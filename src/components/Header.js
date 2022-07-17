@@ -24,6 +24,21 @@ const Header = () => {
               Form to PDF
             </Link>
           </li>
+          <li>
+            <Link className="navlink" to="pptdemo">
+              PPT Demo
+            </Link>
+          </li>
+          <li>
+            <Link className="navlink" to="ctest">
+              Context Test
+            </Link>
+          </li>
+          <li>
+            <Link className="navlink" to="pdfdemo">
+              PDF Demo
+            </Link>
+          </li>
         </ul>
       </nav>
     </>

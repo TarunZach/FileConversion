@@ -16,6 +16,13 @@ import experience_image from "../images/experience.png";
 import skills_image from "../images/skills.png";
 import trainings_image from "../images/trainings.png";
 import certifications_image from "../images/certifications.png";
+// import star_image from '../images/star.png';
+import one_star_image from "../images/one_star.jpeg";
+import two_star_image from "../images/two_star.jpeg";
+import three_star_image from "../images/three_star.jpeg";
+import four_star_image from "../images/four_star.jpeg";
+// import five_star_image from '../images/five_star.jpeg';
+
 // Import By Abnit Ends
 
 //
@@ -60,9 +67,9 @@ const PDF = (props) => {
   console.log("user", user);
 
   // Changes Made By Abnit
-  const generatePPT = () => {
-    const toInches = (cms) => cms / 2.54;
+  const toInches = (cms) => cms / 2.54;
 
+  const generatePPT = () => {
     // Create A pptx
     // 1. Create a new pptxentation
     let pptx = new PptxGenJS();
@@ -157,6 +164,46 @@ const PDF = (props) => {
     });
 
     //Relevant Experience Section
+
+    // Logic for relevant Experience Section:
+
+    let experience_merged_text = [];
+    let experience_data = [];
+    let employee_relevant_experience = user.employee_relevant_experience;
+
+    let project_head = employee_relevant_experience.match(/Project Name/g); //Splitted Header
+    let project_info = employee_relevant_experience.split(/Project Name/g); //Splitted Content
+    project_info.shift();
+    let project_data = [];
+    project_info.forEach((project) => {
+      project_data.push(
+        project.replace(/Role/g, "\nRole").replace(/Languages/g, "\nLanguages")
+      );
+    });
+    if (project_head && project_data) {
+      if (project_head.length === project_data.length) {
+        for (let i = 0; i < project_head.length && project_data.length; i++) {
+          experience_merged_text.push([project_head[i], project_data[i]]);
+        }
+
+        experience_merged_text.forEach((experience, index) => {
+          experience_data.push(
+            {
+              text: `${index + 1}. ${experience[0]}`,
+              options: { fontSize: 9, bold: true }
+            },
+            {
+              text: experience[1],
+              options: { fontSize: 9, lineSpacingMultiple: 1, breakLine: true }
+            }
+          );
+        });
+      }
+    } else {
+      experience_data = employee_relevant_experience;
+    }
+    console.log(experience_data);
+    console.log("Experienced Data: ", experience_data);
     slide.addShape(pptx.shapes.OVAL, {
       x: toInches(3.54),
       y: toInches(2.7),
@@ -183,38 +230,19 @@ const PDF = (props) => {
       fontFace: "Source Sans Pro Black",
       align: "center"
     });
-    slide.addText(`${user.employee_relevant_experience}`, {
+    slide.addText(experience_data, {
       x: toInches(0.5),
       y: toInches(5.3),
       w: toInches(7.5),
       h: toInches(6.8),
       color: "444444",
-      fontSize: 10,
+      fontSize: 9,
       fontFace: "Calibri",
+      lineSpacingMultiple: 1.2,
       valign: "top"
     });
 
     //Skills Section
-
-    // Skills Logic
-    let skills = user.employee_primary_experience.concat(
-      user.employee_secondary_experience
-    );
-
-    let all_skills = [];
-    if (skills) {
-      skills = skills.split(";");
-      console.log(`Skills: `, skills);
-      skills.forEach((skill, index) => {
-        all_skills.push({
-          text: `${index + 1}. ${skill}`,
-          options: { fontSize: 10, breakLine: true }
-        });
-      });
-    } else {
-      all_skills = "N/A";
-    }
-    console.log(`All Skills: `, all_skills);
 
     slide.addShape(pptx.shapes.OVAL, {
       x: toInches(10.6),
@@ -242,33 +270,93 @@ const PDF = (props) => {
       fontFace: "Source Sans Pro Black",
       align: "center"
     });
-    slide.addText(all_skills, {
-      x: toInches(8.7),
-      y: toInches(5.3),
-      w: toInches(5.3),
-      h: toInches(6.8),
-      color: "444444",
-      fontSize: 10,
-      fontFace: "Calibri",
-      valign: "top"
-    });
 
+    let initial_skill_x = 8.69;
+    let initial_skill_y = 5.3;
+    let initial_star_x = 9;
+    let initial_star_y = 5.96;
+    let skill_type_x = 11.4;
+    let skill_type_y = 5.4;
+
+    let skill_level = {
+      Beginner: { path: one_star_image, w: toInches(0.45), h: toInches(0.4) },
+      Trained: { path: two_star_image, w: toInches(0.9), h: toInches(0.4) },
+      Intermediate: {
+        path: three_star_image,
+        w: toInches(1.3),
+        h: toInches(0.4)
+      },
+      Expert: { path: four_star_image, w: toInches(1.7), h: toInches(0.4) }
+    };
+
+    let skills;
+    if (user.employee_skills) {
+      skills = user.employee_skills;
+      console.log(skills);
+
+      skills.forEach((skill) => {
+        slide.addText(skill.skill_name, {
+          x: toInches(initial_skill_x),
+          y: toInches(initial_skill_y),
+          w: toInches(2.82),
+          h: toInches(0.6),
+          fontSize: 9,
+          bold: true
+        });
+        slide.addText(skill.skill_type, {
+          x: toInches(skill_type_x),
+          y: toInches(skill_type_y),
+          w: toInches(1.82),
+          h: toInches(0.5),
+          fontSize: 8,
+          align: "center",
+          color: "ffffff",
+          valign: "center",
+          bold: true,
+          fill: {
+            color: `${skill.skill_type === "primary" ? "ff9800" : "0080ff"}`
+          },
+          rectRadius: 3
+        });
+        slide.addImage({
+          ...skill_level[skill.skill_prof],
+          x: toInches(initial_star_x),
+          y: toInches(initial_star_y)
+        });
+        initial_skill_y += 1.2;
+        initial_star_y += 1.2;
+        skill_type_y += 1.2;
+      });
+    } else {
+      skills = [
+        user.employee_primary_experience,
+        user.employee_secondary_experience
+      ];
+      console.log(skills);
+    }
     // Logic for Training Section
 
     let all_trainings = [];
     if (user.employee_trainings) {
       let trainings = user.employee_trainings.split(",");
-
-      trainings.forEach((training, index) => {
-        all_trainings.push({
-          text: `${index + 1}. ${training}`,
-          options: { fontSize: 10, breakLine: true }
+      if (trainings) {
+        trainings.forEach((training, index) => {
+          all_trainings.push({
+            text: `${training}`,
+            options: {
+              fontSize: 9,
+              breakLine: true,
+              bullet: { indent: 15, type: "number", style: "arabicPeriod" }
+            }
+          });
         });
-      });
+      } else {
+        all_trainings = "";
+      }
     } else {
-      all_trainings = "N/A";
+      all_trainings = "";
     }
-    //Training Sectio n
+    //Training Section
     slide.addShape(pptx.shapes.OVAL, {
       x: toInches(16.04),
       y: toInches(2.7),
@@ -285,25 +373,25 @@ const PDF = (props) => {
       h: toInches(0.96)
     });
     slide.addText("Training", {
-      x: toInches(14.78),
+      x: toInches(15.6),
       y: toInches(4.4),
-      w: toInches(4),
+      w: toInches(5),
       h: toInches(0.6),
       color: "235169",
       bold: true,
-      align: "center",
       fontSize: 14,
       fontFace: "Source Sans Pro Black"
     });
     slide.addText(all_trainings, {
+      bullet: true,
       x: toInches(14.2),
       y: toInches(5.3),
       w: toInches(5.3),
       h: toInches(6),
       color: "444444",
-      fontSize: 10,
+      fontSize: 9,
       fontFace: "Calibri",
-      lineSpacingMultiple: 1,
+      lineSpacingMultiple: 1.2,
       valign: "top"
     });
 
@@ -334,19 +422,16 @@ const PDF = (props) => {
       fontFace: "Source Sans Pro Black",
       align: "center"
     });
-    slide.addText(
-      `${user.employee_certificates ? user.employee_certificates : "N/A"}`,
-      {
-        x: toInches(19.9),
-        y: toInches(5.3),
-        w: toInches(5.3),
-        h: toInches(6),
-        color: "444444",
-        fontSize: 10,
-        fontFace: "Calibri",
-        valign: "top"
-      }
-    );
+    slide.addText(`${user.employee_certificates}`, {
+      x: toInches(19.9),
+      y: toInches(5.3),
+      w: toInches(5.3),
+      h: toInches(6),
+      color: "444444",
+      fontSize: 9,
+      fontFace: "Calibri",
+      valign: "top"
+    });
 
     // Review Section
     slide.addText(
@@ -356,18 +441,17 @@ const PDF = (props) => {
           options: { fontSize: 12, color: "235169", bold: true }
         },
         {
-          text:
-            "This is a demo review Section to check how the review is working with the presentation",
-          options: { fontSize: 10, color: "444444" }
+          text: user.employee_reviews,
+          options: { fontSize: 9, color: "444444" }
         }
       ],
       {
         x: toInches(0.41),
-        y: toInches(12.3),
+        y: toInches(12.1),
         w: toInches(24.59),
-        h: toInches(0.8),
+        h: toInches(1.07),
         fill: { color: "f9f9f9" },
-        line: { color: "234567", width: "1" }
+        line: { color: "234567", width: "1", valign: "top" }
       }
     );
 
@@ -404,9 +488,11 @@ const PDF = (props) => {
 
   const generatePDF = () => {
     console.log("pdf button click");
-    let doc = new jsPDF("l", "px", [1200, 720]);
+    let doc = new jsPDF("l", "px", [1200, 700]);
     doc.html(document.getElementById("displayPDF"), {
       callback: function (pdf) {
+        var PageCount = doc.internal.getNumberOfPages();
+        pdf.deletePage(PageCount);
         pdf.save("candidate");
       }
     });
@@ -459,7 +545,7 @@ const PDF = (props) => {
                   </div>
                   <div className="details">
                     <p className="detail-text">
-                      <b>HTML/CSS</b>: {user.employee_htmlcss}
+                      <b>HTML &nbsp; CSS </b> : {user.employee_htmlcss}
                     </p>
                     <p className="detail-text">
                       <b>JavaScript</b>: {user.employee_js}
